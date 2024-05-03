@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 40px;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background-color: #1f121256;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #000000;
+        }
+
+        .btn-dark, .btn-success, .btn-warning, .btn-danger {
+            margin-right: 10px;
+        }
+
+        ul.list-group {
+            margin-top: 20px;
+        }
+
+        .list-group-item {
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+        }
+
+        .list-group-item:hover {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center><h1 class="mt-4">URL Shortener</h1></center>
+        {% if create_message %}
+            <div class="alert alert-success" role="alert">
+                {{ create_message }}
+            </div>
+        {% endif %}
+        {% if delete_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ delete_message }}
+            </div>
+        {% endif %}
+        <form method="post" action="/shorten" class="mt-4">
+            <div class="form-group">
+                <label for="long_url">Enter URL:</label>
+                <input type="url" class="form-control" name="long_url" required>
+            </div>
+            <button type="submit" class="btn btn-info">Shorten</button>
+        </form>
+        {% if short_url %}
+            <div class="mt-4">
+                <p>Short URL: <a href="{{ short_url }}" target="_blank">{{ short_url }}</a></p>
+            </div>
+        {% endif %}
+        <hr class="mt-4">
+        <h2 class="mt-4">URLs</h2>
+        <ul class="list-group">
+            {% for url in urls %}
+                <li class="list-group-item">
+                    <strong>{{ url.short_url }}</strong> - {{ url.long_url }}
+                    <div class="float-right">
+                        <a href="{{ url.short_url }}" target="_blank" class="btn btn-sm btn-success">Visit</a>
+                        <a href="/update/{{ url.short_url }}" class="btn btn-sm btn-dark">Update</a>
+                        <a href="/delete/{{ url.short_url }}" class="btn btn-sm btn-danger">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
